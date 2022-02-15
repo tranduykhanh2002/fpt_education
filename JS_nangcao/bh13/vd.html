@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <h1>List User</h1>
+    <ul id="list-user"></ul>
+    <ul id="page-number"></ul>
+    <script>
+        // lấy tham số trên URL 
+        let params = new URLSearchParams(document.location.search);
+        let page = params.get("page"); // lấy số trang hiện tại người dùng muốn xem
+        let per_page = parseInt(params.get("per_page")); // lấy số bản ghi 1 trang, đặt mặc định là 3
+        console.log('https://reqres.in/api/users?page=' + page + '&per_page=' + per_page);
+        option = {
+            url: 'https://reqres.in/api/users?page=' + page + '&per_page=' + per_page,
+            method: "get",
+            responseType: "json"
+        }
+        axios(option)
+            .then(function(data_res) {
+                console.log(data_res);
+                list = data_res.data.data;
+                str_li = ""
+                list.forEach(function(item_user) {
+                    str_li += "<li>" + item_user.id + '---' + item_user.email + '</li>';
+                });
+                document.querySelector('#list-user').innerHTML = str_li;
+                console.log(list);
+                //-- xử lý số trang 
+                li_page = ''
+                for (i = 1; i <= data_res.data.total_pages; i++) {
+                    li_page += "<li><a href='?page=" + i + "&per_page=3' >" + i + '</a></li>';
+                }
+                document.querySelector('#page-number').innerHTML = li_page;
+            })
+            .catch(function(err) {
+                console.log(err);
+            })
+    </script>
+
+
+
+</body>
+
+</html>
