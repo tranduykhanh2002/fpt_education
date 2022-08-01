@@ -1,0 +1,3 @@
+{
+    "phpsab.executablePathCS": "composer config --list --global | grep \"home\""
+}
